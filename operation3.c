@@ -1,115 +1,98 @@
 #include "monty.h"
 /**
- * _push - pushes an element to the stack
- *
- * @doubly: head of the linked list
- * @cline: line number
- */
-void _push(stack_t **doubly, unsigned int cline)
+ * f_push - add node to the stack
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_push(stack_t **head, unsigned int counter)
 {
-	int n, j;
+	int n, j = 0, flag = 0;
 
-	if (!vglo.arg)
+	if (bus.arg)
 	{
-		printf("L%u: ", cline);
-		printf("usage: push integer\n");
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	for (j = 0; vglo.arg[j] != '\0'; j++)
-	{
-		if (!isdigit(vglo.arg[j]) && vglo.arg[j] != '-')
+		if (bus.arg[0] == '-')
+			j++;
+		for (; bus.arg[j] != '\0'; j++)
 		{
-			printf("L%u: ", cline);
-			printf("usage: push integer\n");
-			free_vglo();
-			exit(EXIT_FAILURE);
-		}
-	}
-	n = atoi(vglo.arg);
-	if (vglo.lifo == 1)
-		add_dnodeint(doubly, n);
+			if (bus.arg[j] > 57 || bus.arg[j] < 48)
+				flag = 1; }
+		if (flag == 1)
+		{ fprintf(stderr, "L%d: usage: push integer\n", counter);
+			fclose(bus.file);
+			free(bus.content);
+			free_stack(*head);
+			exit(EXIT_FAILURE); }}
 	else
-		add_dnodeint_end(doubly, n);
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE); }
+	n = atoi(bus.arg);
+	if (bus.lifi == 0)
+		addnode(head, n);
+	else
+		addqueue(head, n);
 }
 /**
- * _pall - prints all values on the stack
- * @doubly: head of the linked list
- * @cline: line numbers
- */
-void _pall(stack_t **doubly, unsigned int cline)
+ * f_pop - prints the top
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_pop(stack_t **head, unsigned int counter)
 {
-	stack_t *aux;
-	(void)cline;
+	stack_t *h;
 
-	aux = *doubly;
-	while (aux)
+	if (*head == NULL)
 	{
-		printf("%d\n", aux->n);
-		aux = aux->next;
-	}
-}
-/**
- * _pint - prints the value at the top of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number
- */
-void _pint(stack_t **doubly, unsigned int cline)
-{
-	(void)cline;
-	if (*doubly == NULL)
-	{
-		printf("L%u: ", cline);
-		printf("can't pint, stack empty\n");
-		free_vglo();
+		fprintf(stderr, "L%d: can't pop an empty stack\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	printf("%d\n", (*doubly)->n);
+	h = *head;
+	*head = h->next;
+	free(h);
 }
 /**
- * _pop - removes the top element of the stack
- * @doubly: head of the linked list
- * @cline: line number
- */
-void _pop(stack_t **doubly, unsigned int cline)
+ * f_pall - prints the stack
+ * @head: stack head
+ * @counter: no used
+ * Return: no return
+*/
+void f_pall(stack_t **head, unsigned int counter)
 {
-	stack_t *aux;
+	stack_t *h;
+	(void)counter;
 
-	if (doubly == NULL || *doubly == NULL)
+	h = *head;
+	if (h == NULL)
+		return;
+	while (h)
 	{
-		printf("L%u: can't pop an empty stack\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
+		printf("%d\n", h->n);
+		h = h->next;
 	}
-	aux = *doubly;
-	*doubly = (*doubly)->next;
-	free(aux);
 }
 /**
- * _swap - swaps the top two elements of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number
- */
-void _swap(stack_t **doubly, unsigned int cline)
+ * f_pint - prints the top
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_pint(stack_t **head, unsigned int counter)
 {
-	int m = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-	for (; aux != NULL; aux = aux->next, m++)
-		;
-	if (m < 2)
+	if (*head == NULL)
 	{
-		printf("L%u: can't swap, stack too short\n", cline);
-		free_vglo();
+		fprintf(stderr, "L%u: can't pint, stack empty\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	aux = *doubly;
-	*doubly = (*doubly)->next;
-	aux->next = (*doubly)->next;
-	aux->prev = *doubly;
-	(*doubly)->next = aux;
-	(*doubly)->prev = NULL;
+	printf("%d\n", (*head)->n);
 }

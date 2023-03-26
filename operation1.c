@@ -1,84 +1,122 @@
 #include "monty.h"
 /**
- * _queue - sets the format of the data to a queue (FIFO)
- *
- * @head: head of the linked list
- * @n: line number;
- */
-void _queue(stack_t **head, unsigned int n)
+ * f_stack - prints the top
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_stack(stack_t **head, unsigned int counter)
 {
 	(void)head;
-	(void)n;
-	vglo.lifo = 0;
+	(void)counter;
+	bus.lifi = 0;
 }
 /**
- * _stack - sets the format fo the data to a stack (LIFO)
- *
- * @head: head of the linked list
- * @n: line number;
- */
-void _stack(stack_t **head, unsigned int n)
+ * f_add - adds the top two elements of the stack.
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_add(stack_t **head, unsigned int counter)
 {
-	(void)head;
-	(void)n;
-	vglo.lifo = 1;
-}
-/**
- * _add - adds the top two elements of the stack
- *
- * @head: head of the linked list
- * @n: line number;
- */
-void _add(stack_t **head, unsigned int cline)
-{
-	int i = 0;
-	stack_t *first = NULL;
+	stack_t *h;
+	int len = 0, aux;
 
-	first = *head;
-	for (; first != NULL; first = first->next, i++)
-		;
-	if (i < 2)
+	h = *head;
+	while (h)
 	{
-		printf("L%u: can't add, stack too short\n", cline);
-		free_vglo();
+		h = h->next;
+		len++;
+	}
+	if (len < 2)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	first = (*head)->next;
-	first->n += (*head)->n;
-	_pop(head, cline);
+	h = *head;
+	aux = h->n + h->next->n;
+	h->next->n = aux;
+	*head = h->next;
+	free(h);
 }
 /**
- * _nop - doesn't do anythinhg
- *
- * @head: head of the linked list
- * @n: line number;
- */
-void _nop(stack_t **head, unsigned int n)
+ * f_div - divides the top two elements of the stack.
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_div(stack_t **head, unsigned int counter)
 {
-	(void)head;
-	(void)n;
-}
-/**
- * _sub - subtracts the top element to the second top element of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number;
- */
-void _sub(stack_t **doubly, unsigned int cline)
-{
-	int m = 0;
-	stack_t *aux = NULL;
+	stack_t *h;
+	int len = 0, aux;
 
-	aux = *doubly;
-	for (; aux != NULL; aux = aux->next, m++)
-		;
-	if (m < 2)
+	h = *head;
+	while (h)
 	{
-		printf("L%u: can't sub, stack too short\n", cline);
-		free_vglo();
+		h = h->next;
+		len++;
+	}
+	if (len < 2)
+	{
+		fprintf(stderr, "L%d: can't div, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	aux = (*doubly)->next;
-	aux->n -= (*doubly)->n;
-	_pop(doubly, cline);
+	h = *head;
+	if (h->n == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+	aux = h->next->n / h->n;
+	h->next->n = aux;
+	*head = h->next;
+	free(h);
+}
+/**
+  *f_nop- nothing
+  *@head: stack head
+  *@counter: line_number
+  *Return: no return
+ */
+void f_nop(stack_t **head, unsigned int counter)
+{
+	(void) counter;
+	(void) head;
+}
+/**
+  *f_sub- sustration
+  *@head: stack head
+  *@counter: line_number
+  *Return: no return
+ */
+void f_sub(stack_t **head, unsigned int counter)
+{
+	stack_t *aux;
+	int sus, nodes;
+
+	aux = *head;
+	for (nodes = 0; aux != NULL; nodes++)
+		aux = aux->next;
+	if (nodes < 2)
+	{
+		fprintf(stderr, "L%d: can't sub, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+	aux = *head;
+	sus = aux->next->n - aux->n;
+	aux->next->n = sus;
+	*head = aux->next;
+	free(aux);
 }

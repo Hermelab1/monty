@@ -1,61 +1,51 @@
 #include "monty.h"
-
 /**
- * _rotl - the function used to rotate first element to bottom
- *
- * @doubly: the head of the list
- * @cline: number
+  *f_rotl- rotates the stack to the top
+  *@head: stack head
+  *@counter: line_number
+  *Return: no return
  */
-void _rotl(stack_t **doubly, unsigned int cline)
+void f_rotl(stack_t **head,  __attribute__((unused)) unsigned int counter)
 {
-	stack_t *first = NULL;
-	stack_t *second = NULL;
+	stack_t *tmp = *head, *aux;
 
-	(void)cline;
-	if (*doubly == NULL)
+	if (*head == NULL || (*head)->next == NULL)
 	{
 		return;
 	}
-	if ((*doubly)->next == NULL)
+	aux = (*head)->next;
+	aux->prev = NULL;
+	while (tmp->next != NULL)
 	{
-		return;
+		tmp = tmp->next;
 	}
-	first = (*doubly)->next;
-	second = *doubly;
-	for (; second->next != NULL; second = second->next)
-		;
-	first->prev = NULL;
-	second->next = *doubly;
-	(*doubly)->next = NULL;
-	(*doubly)->prev = second;
-	*doubly = first;
+	tmp->next = *head;
+	(*head)->next = NULL;
+	(*head)->prev = tmp;
+	(*head) = aux;
 }
-
 /**
- * _rotr - used to revers stack
- *
- * @doubly: list head
- * @cline: number of line
+  *f_rotr- rotates the stack to the bottom
+  *@head: stack head
+  *@counter: line_number
+  *Return: no return
  */
-void _rotr(stack_t **doubly, unsigned int cline)
+void f_rotr(stack_t **head, __attribute__((unused)) unsigned int counter)
 {
-	stack_t *first = NULL;
-	(void)cline;
+	stack_t *copy;
 
-	if (*doubly == NULL)
+	copy = *head;
+	if (*head == NULL || (*head)->next == NULL)
 	{
 		return;
 	}
-	if ((*doubly)->next == NULL)
+	while (copy->next)
 	{
-		return;
+		copy = copy->next;
 	}
-	first = *doubly;
-	for (; first->next != NULL; first = first->next)
-		;
-	first->prev->next = NULL;
-	first->next = *doubly;
-	first->prev = NULL;
-	(*doubly)->prev = first;
-	*doubly = first;
+	copy->next = *head;
+	copy->prev->next = NULL;
+	copy->prev = NULL;
+	(*head)->prev = copy;
+	(*head) = copy;
 }

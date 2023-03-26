@@ -1,130 +1,72 @@
 #include "monty.h"
 /**
- * _div - divides the second element by the top element of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number;
+ * f_mod - computes the rest of the division of the second
+ * top element of the stack by the top element of the stack
+ * @head: stack head
+ * @counter: line_number
  * Return: no return
- */
-void _div(stack_t **doubly, unsigned int cline)
+*/
+void f_mod(stack_t **head, unsigned int counter)
 {
-	int m = 0;
-	stack_t *aux = NULL;
+	stack_t *h;
+	int len = 0, aux;
 
-	aux = *doubly;
-	for (; aux != NULL; aux = aux->next, m++)
-		;
-	if (m < 2)
+	h = *head;
+	while (h)
 	{
-		printf("L%u: can't div, stack too short\n", cline);
-		free_vglo();
+		h = h->next;
+		len++;
+	}
+	if (len < 2)
+	{
+		fprintf(stderr, "L%d: can't mod, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	if ((*doubly)->n == 0)
+	h = *head;
+	if (h->n == 0)
 	{
-		printf("L%u: division by zero\n", cline);
-		free_vglo();
+		fprintf(stderr, "L%d: division by zero\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	aux = (*doubly)->next;
-	aux->n /= (*doubly)->n;
-	_pop(doubly, cline);
+	aux = h->next->n % h->n;
+	h->next->n = aux;
+	*head = h->next;
+	free(h);
 }
 /**
- * _mul - multiplies the top element to the second top element of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number;
+ * f_mul - multiplies the top two elements of the stack.
+ * @head: stack head
+ * @counter: line_number
  * Return: no return
- */
-void _mul(stack_t **doubly, unsigned int cline)
+*/
+void f_mul(stack_t **head, unsigned int counter)
 {
-	int m = 0;
-	stack_t *aux = NULL;
+	stack_t *h;
+	int len = 0, aux;
 
-	aux = *doubly;
-	for (; aux != NULL; aux = aux->next, m++)
-		;
-	if (m < 2)
+	h = *head;
+	while (h)
 	{
-		printf("L%u: can't mul, stack too short\n", cline);
-		free_vglo();
+		h = h->next;
+		len++;
+	}
+	if (len < 2)
+	{
+		fprintf(stderr, "L%d: can't mul, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
-	aux = (*doubly)->next;
-	aux->n *= (*doubly)->n;
-	_pop(doubly, cline);
-}
-/**
- * _mod - computes the rest of the division of the second element
- * by the top element of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number;
- * Return: no return
- */
-void _mod(stack_t **doubly, unsigned int cline)
-{
-	int m = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-	for (; aux != NULL; aux = aux->next, m++)
-		;
-	if (m < 2)
-	{
-		printf("L%u: can't mod, stack too short\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	if ((*doubly)->n == 0)
-	{
-		printf("L%u: division by zero\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	aux = (*doubly)->next;
-	aux->n %= (*doubly)->n;
-	_pop(doubly, cline);
-}
-/**
- * _pchar - print the char value of the first element
- *
- * @head: head of the linked list
- * @cline: line number;
- */
-void _pchar(stack_t **head, unsigned int cline)
-{
-	if (head == NULL || *head == NULL)
-	{
-		printf("L%u: can't pchar, stack empty\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	if ((*head)->n < 0 || (*head)->n >= 128)
-	{
-		printf("L%u: can't pchar, value out of range\n", cline);
-		free_vglo();
-		exit(EXIT_FAILURE);
-	}
-	printf("%c\n", (*head)->n);
-}
-/**
- * _pstr - prints the string of the stack
- *
- * @head: head of the linked list
- * @n: line number;
- */
-void _pstr(stack_t **head, unsigned int n)
-{
-	stack_t *first;
-	(void)n;
-
-	first = *head;
-	while (first && first->n > 0 && first->n < 128)
-	{
-		printf("%c", first->n);
-		first = first->next;
-	}
-	printf("\n");
+	h = *head;
+	aux = h->next->n * h->n;
+	h->next->n = aux;
+	*head = h->next;
+	free(h);
 }
