@@ -1,15 +1,15 @@
-#include "month.h"
+#include "monty.h"
 
 /**
- * _rot_first - the function used to rotate first element to bottom
+ * _rotl - the function used to rotate first element to bottom
  *
  * @doubly: the head of the list
  * @cline: number
  */
-void _rot_first(stack_t **doubly, unsigned int cline)
+void _rotl(stack_t **doubly, unsigned int cline)
 {
-	int *first = NULL;
-	int *second = NULL;
+	stack_t *first = NULL;
+	stack_t *second = NULL;
 
 	(void)cline;
 	if (*doubly == NULL)
@@ -32,12 +32,12 @@ void _rot_first(stack_t **doubly, unsigned int cline)
 }
 
 /**
- * _rev_stack - used to revers stack
+ * _rotr - used to revers stack
  *
  * @doubly: list head
  * @cline: number of line
  */
-void _rev_stack(stack_t **doubly, unsigned int cline)
+void _rotr(stack_t **doubly, unsigned int cline)
 {
 	stack_t *first = NULL;
 	(void)cline;

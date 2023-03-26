@@ -1,4 +1,5 @@
 #include "monty.h"
+
 /**
  *add_dnodeint_end - add a note at the end of the doubly link list
  *@head: first position of linked list
@@ -7,13 +8,13 @@
  */
 stack_t *add_dnodeint_end(stack_t **head, const int n)
 {
-stack_t *temp, *aux;
+	stack_t *temp, *aux;
 	if (head == NULL)
 		return (NULL);
 	temp = malloc(sizeof(stack_t));
 	if (!temp)
 	{
-		dprintf(2, "Error: malloc failed\n");
+		printf("Error: malloc failed\n");
 		free_vglo();
 		exit(EXIT_FAILURE);
 	}
@@ -49,12 +50,11 @@ stack_t *add_dnodeint(stack_t **head, const int n)
 	temp = malloc(sizeof(stack_t));
 	if (!temp)
 	{
-		dprintf(2, "Error: malloc failed\n");
+		printf("Error: malloc failed\n");
 		free_vglo();
 		exit(EXIT_FAILURE);
 	}
 	temp->n = n;
-	/*Careful with the first time*/
 	if (*head == NULL)
 	{
 		temp->next = *head;

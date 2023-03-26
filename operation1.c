@@ -29,7 +29,7 @@ void _stack(stack_t **head, unsigned int n)
  * @head: head of the linked list
  * @n: line number;
  */
-void _add(stack_t **head, unsigned int n)
+void _add(stack_t **head, unsigned int cline)
 {
 	int i = 0;
 	stack_t *first = NULL;
@@ -39,13 +39,13 @@ void _add(stack_t **head, unsigned int n)
 		;
 	if (i < 2)
 	{
-		dprintf(2, "L%u: can't add, stack too short\n", n);
+		printf("L%u: can't add, stack too short\n", cline);
 		free_vglo();
 		exit(EXIT_FAILURE);
 	}
 	first = (*head)->next;
-	first->next += (*head)->next;
-	_pop(head, n);
+	first->n += (*head)->n;
+	_pop(head, cline);
 }
 /**
  * _nop - doesn't do anythinhg
@@ -74,7 +74,7 @@ void _sub(stack_t **doubly, unsigned int cline)
 		;
 	if (m < 2)
 	{
-		dprintf(2, "L%u: can't sub, stack too short\n", cline);
+		printf("L%u: can't sub, stack too short\n", cline);
 		free_vglo();
 		exit(EXIT_FAILURE);
 	}

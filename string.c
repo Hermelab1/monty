@@ -1,85 +1,82 @@
 #include "monty.h"
 
 /**
- * _strcompare - to compare two string
- *
- * @s1: 1st string to compared
- * @s2: 2nd string to compared
- * Return: 0 if s1 and s2 are equals
+ * _strcmp - Function that compares two strings.
+ * @s1: type str compared
+ * @s2: type str compared
+ * Return: 0 if s1 and s2 are equals.
+ *         another value if they are different
  */
-int _strcompare(char *s1, char *s2)
+int _strcmp(char *s1, char *s2)
 {
-	int i = 0;
+	int i;
 
-	while (s1[i] != '\0' && s2[i] != '\0')
-	{
-		if (s1[i] != s2[i])
-		{
-			return (s1[i] - s2[i]);
-		}
-		i++;
-	}
-	return (s1[i] - s2[i]);
+	for (i = 0; s1[i] == s2[i] && s1[i]; i++)
+		;
+	if (s1[i] > s2[i])
+		return (1);
+	if (s1[i] < s2[i])
+		return (-1);
+	return (0);
 }
 
 /**
- * _strsearch - search if a char is inside a string
- *
+ * _sch - search if a char is inside a string
  * @s: string to review
  * @c: char to find
  * Return: 1 if success 0 if not
  */
-int _strsearch(char *s, char c)
+int _sch(char *s, char c)
 {
-	int i;
+	int cont = 0;
 
-	for (i = 0; s[i] != '\0'; i++)
+	while (s[cont] != '\0')
 	{
-		if (s[i] == c)
+		if (s[cont] == c)
 		{
-			return (i);
+			break;
 		}
+		cont++;
 	}
-	if (s[i] == c)
+	if (s[cont] == c)
 		return (1);
 	else
 		return (0);
 }
 
 /**
- * _strcuttok - function to ut a string into tokens depending of the delimit
- * @s: string to cut
+ * _strtoky - function that cut a string into tokens depending of the delimit
+ * @s: string to cut in parts
  * @d: delimiters
- * Return: 1st partition
+ * Return: first partition
  */
-char *_strcuttok(char *s, char *d)
+char *_strtoky(char *s, char *d)
 {
-	static char *lasts;
-	int i = 0;
-	int j = 0;
+	static char *ultimo;
+	int i = 0, j = 0;
 
 	if (!s)
-		s = lasts;
+		s = ultimo;
 	while (s[i] != '\0')
 	{
-		if (_strsearch(d, s[i] == 0 && s[i + 1] == '\0')
+		if (_sch(d, s[i]) == 0 && s[i + 1] == '\0')
 		{
-			lasts = s + i + 1;
-			*lasts = '\0';
+			ultimo = s + i + 1;
+			*ultimo = '\0';
 			s = s + j;
 			return (s);
 		}
-		else if (_strsearch(d, s[i]) == 0 && _sch(d, s[i + 1]) == 0)
+		else if (_sch(d, s[i]) == 0 && _sch(d, s[i + 1]) == 0)
 			i++;
-		else if (_strsearch(d, s[i]) == 0 && _sch(d, s[i + 1]) == 1)
+		else if (_sch(d, s[i]) == 0 && _sch(d, s[i + 1]) == 1)
 		{
-			lasts = s + i + 1;
-			*lasts = '\0';
-			lasts++;
+			ultimo = s + i + 1;
+			*ultimo = '\0';
+			ultimo++;
 			s = s + j;
 			return (s);
 		}
-		else if (_strsearch(d, s[i]) == 1)
+		else if (_sch(d, s[i]) == 1)
 		{
 			j++;
 			i++;

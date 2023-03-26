@@ -1,4 +1,5 @@
 #include "monty.h"
+#include <stdio.h>
 
 /**
  * get_opcodes - selects the correct opcode to perform
@@ -21,7 +22,6 @@ instruction_t instruct[] = {
 		{"nop", _nop},
 		{"sub", _sub},
 		{"mul", _mul},
-
 		{"div", _div},
 		{"mod", _mod},
 		{"pchar", _pchar},
@@ -61,7 +61,7 @@ void start_vglo(FILE *fd)
 {
 	vglo.lifo = 1;
 	vglo.cont = 1;
-	vglo.arg = NLL;
+	vglo.arg = NULL;
 	vglo.head = NULL;
 	vglo.fd = fd;
 	vglo.buffer = NULL;
@@ -80,13 +80,13 @@ FILE *check_input(int argc, char *argv[])
 
 	if (argc == 1 || argc > 2)
 	{
-		dprintf(2, "USAGE: monty file\n");
+		printf("USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	fd = fopen(argv[1], "r");
 	if (fd == NULL)
 	{
-		dprintf(2, "Error: Can't open file %s\n", argv[1]);
+		printf("Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 	return (fd);
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
 			f = get_opcodes(lines[0]);
 			if (!f)
 			{
-				dprintf(2, "L%u: ", vglo.cont);
-				dprintf(2, "unknown instruction %s\n", lines[0]);
+				printf("L%u: ", vglo.cont);
+				printf("unknown instruction %s\n", lines[0]);
 				free_vglo();
 				exit(EXIT_FAILURE);
 			}

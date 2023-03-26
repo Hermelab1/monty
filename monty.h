@@ -1,5 +1,5 @@
-#ifndef _MONTY_H
-#define _MONTY_H
+#ifndef MONTY_H
+#define MONTY_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,11 +63,11 @@ typedef struct instruction_s
 
 extern global_t vglo;
 
-char *_strcuttok(char *s, char *d);
-int _strsearch(char *s, char c);
-int _strcompare(char *s1, char *s2);
-void _rot_first(stack_t **doubly, unsigned int cline);
-void _rev_stack(stack_t **doubly, unsigned int cline);
+char *_strtoky(char *s, char *d);
+int _sch(char *s, char c);
+int _strcmp(char *s1, char *s2);
+void _rotl(stack_t **doubly, unsigned int cline);
+void _rotr(stack_t **doubly, unsigned int cline);
 void _div(stack_t **doubly, unsigned int cline);
 void _mul(stack_t **doubly, unsigned int cline);
 void _mod(stack_t **doubly, unsigned int cline);
@@ -91,3 +91,5 @@ stack_t *add_dnodeint(stack_t **head, const int n);
 void free_dlistint(stack_t *head);
 void free_vglo(void);
 void start_vglo(FILE *fd);
+
+#endif
