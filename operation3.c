@@ -63,7 +63,7 @@ void f_pop(stack_t **head, unsigned int counter)
  * @head: stack head
  * @counter: no used
  * Return: no return
-*/
+ */
 void f_pall(stack_t **head, unsigned int counter)
 {
 	stack_t *h;
@@ -83,7 +83,7 @@ void f_pall(stack_t **head, unsigned int counter)
  * @head: stack head
  * @counter: line_number
  * Return: no return
-*/
+ */
 void f_pint(stack_t **head, unsigned int counter)
 {
 	if (*head == NULL)
